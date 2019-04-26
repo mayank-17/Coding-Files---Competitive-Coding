@@ -575,7 +575,7 @@ void diagonalView(binaryTreeNode<int> *root) {
     }
 }
 
-// Basic Approach
+// Basic Approach O(n + heightOfBinaryTree)
 int diameterOfBinaryTree(binaryTreeNode<int> *root) {
     if(!root) {
         return 0;
@@ -586,36 +586,74 @@ int diameterOfBinaryTree(binaryTreeNode<int> *root) {
     return max(option1, max(option2, option3));
 }
 
+// Better Approach O(n)
+pair<int, int> heightDiameter(binaryTreeNode<int> *root) {
+    if(!root) {
+        pair<int, int> p;
+        p.first = 0;
+        p.second = 0;
+        return p;
+    }
+
+    pair<int, int> leftAns = heightDiameter(root->left);
+    pair<int, int> rightAns = heightDiameter(root->right);
+    int lh = leftAns.first;
+    int ld = leftAns.second;
+    int rh = rightAns.first;
+    int rd = rightAns.second;
+
+    int height = 1 + max(lh, rh);
+    int diameter = max(lh + rh, max(ld, rd));
+    pair<int, int> p;
+    p.first = height;
+    p.second = diameter;
+    return p;
+}
+
 int main() {
-    // int in[] = {4, 2, 5, 1, 8, 6, 9, 3, 7};
-    // int pre[] = {1, 2, 4, 5, 3, 6, 8, 9, 7};
-    // binaryTreeNode<int> *root = buildTreeUsingInorderAndPreorder(in, pre, 9);
-    // cout << countLevelsUsingQueue(root) << endl;
+    /*
+    int in[] = {4, 2, 5, 1, 8, 6, 9, 3, 7};
+    int pre[] = {1, 2, 4, 5, 3, 6, 8, 9, 7};
+    binaryTreeNode<int> *root = buildTreeUsingInorderAndPreorder(in, pre, 9);
+    cout << countLevelsUsingQueue(root) << endl;
+    */
     
     // binaryTreeNode<int> *root = buildTree();
     binaryTreeNode<int> *root = takeInputLevelWise();
+
+    // /* Height and Diameter
+    pair<int, int> p = heightDiameter(root);
+    cout << "\nHeight: " << p.first << "\nDiameter: " << p.second << "\n";
+    // */
+
+    /* Views
     diagonalView(root);
-    // topView(root);
-    // bottomView(root);
-    // leftView(root);
-    // rightView(root);
-    // zigZagTraversal(root);
-    // verticalOrderTraversal(root);
-    // printTree(root);
+    topView(root);
+    bottomView(root);
+    leftView(root);
+    rightView(root);
+    zigZagTraversal(root);
+    verticalOrderTraversal(root);
+    printTree(root);
+    */
+
     // cout << numberOfLeafbinaryTreeNodes(root);
     // cout << findMaximum(root) << "\n" << findMinimum(root);
     // cout << findElementUsingQueue(root, 10);
     // printKthLevel(root, 3);
     // cout << "\nThe height of tree is: " << heightOfTree(root) << "\n";
-    // levelOrderTraversal(root);
-    // levelOrderTraversalUsingQueue(root);
-    // cout << "Pre-order:\n";
-    // preOrderTraversal(root);
-    // cout << "\nIn-order:\n";
-    // inOrderTraversal(root);
-    // cout << "\nPost-order:\n";
-    // postOrderTraversal(root);
-    // cout << "\n";
+    
+    /* Traversals
+    levelOrderTraversal(root);
+    levelOrderTraversalUsingQueue(root);
+    cout << "Pre-order:\n";
+    preOrderTraversal(root);
+    cout << "\nIn-order:\n";
+    inOrderTraversal(root);
+    cout << "\nPost-order:\n";
+    postOrderTraversal(root);
+    cout << "\n";
+    */
     delete root;
     return 0;
 }
