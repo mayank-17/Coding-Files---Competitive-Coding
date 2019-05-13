@@ -25,6 +25,29 @@ BinarySearchTreeNode<int> *buildTree() {
     return root;
 }
 
+BinarySearchTreeNode<int> *takeInputLevelWise() {
+    int d;
+    cin >> d;
+    BinarySearchTreeNode<int> *root = new BinarySearchTreeNode<int>(d);
+    queue<BinarySearchTreeNode<int> *> q;
+    q.push(root);
+    while(!q.empty()) {
+        BinarySearchTreeNode<int> *n = q.front();
+        q.pop();
+        int child1, child2;
+        cin >> child1 >> child2;
+        if(child1 != -1) {
+            n->left = new BinarySearchTreeNode<int>(child1);
+            q.push(n->left);
+        }
+        if(child2 != -1) {
+            n->right = new BinarySearchTreeNode<int>(child2);
+            q.push(n->right);
+        }
+    }
+    return root;
+}
+
 void printTree(BinarySearchTreeNode<int> *root) {
     queue<BinarySearchTreeNode<int> *> q;
     q.push(root);
@@ -108,10 +131,31 @@ int findMaximumValueIterative(BinarySearchTreeNode<int> *root) {
     return root->data;
 }
 
+// Recursive Approach
+// Time Complexity: O(n)
+// Space Complexity: O(n)
+bool isBST(BinarySearchTreeNode<int> *root, int MIN, int MAX) {
+    if(!root) {
+        return true;
+    }
+    if(root->data < MIN || root->data > MAX) {
+        return false;
+    }
+    return isBST(root->left, MIN, root->data) && isBST(root->right, root->data + 1, MAX);
+}
+
 int main() {
     BinarySearchTreeNode<int> *root = buildTree();
-    cout << findMaximumValueRecursive(root) << "\n";
-    cout << findMaximumValueIterative(root) << "\n";
+    // cout << findMaximumValueRecursive(root) << "\n";
+    // cout << findMaximumValueIterative(root) << "\n";
+
+    /* Is BST
+    if(isBST(root, INT_MIN, INT_MAX)) {
+        cout << "Is a Binary Search Tree!\n";
+    } else {
+        cout << "Not a Binary Search Tree!\n";
+    }
+    */
     // printTree(root);
     // cout << endl;
     // root = insertNodeIterative(root, 5);
